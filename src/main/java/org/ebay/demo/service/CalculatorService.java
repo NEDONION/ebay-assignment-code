@@ -41,13 +41,13 @@ public class CalculatorService {
 			num2 = calculateRequest.getNum2();
 			result = calculator.calculate(operation, num1, num2);
 		} catch (Exception e) {
-			log.error("CalculatorService： Error during calculate: Operation={}, num1={}, num2={}", operation, num1,
+			log.error("CalculatorService: Error during calculate: Operation={}, num1={}, num2={}", operation, num1,
 					num2, e);
 			throw new CalculationException("Failed to execute calculation", e);
 		}
 
 		if (result == null) {
-			log.error("CalculatorService： Error during calculate: Operation={}, num1={}, num2={}", operation, num1,
+			log.error("CalculatorService: Error during calculate: Operation={}, num1={}, num2={}", operation, num1,
 					num2);
 			throw new CalculationException("Failed to execute calculation");
 		}
@@ -71,7 +71,7 @@ public class CalculatorService {
 			}
 			return chainedCalculator.getResult();
 		} catch (Exception e) {
-			log.error("CalculatorService： Error during calculateChain: initialValue={}, operations={}", initialValue,
+			log.error("CalculatorService: Error during calculateChain: initialValue={}, operations={}", initialValue,
 					operations, e);
 			throw new CalculationException("Failed to execute chained calculation", e);
 		}

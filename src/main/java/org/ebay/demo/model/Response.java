@@ -11,9 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Response<T> implements Serializable {
-
-    private String code;
-    private String message;
-    private T data;
-
+	private String code;
+	private String message;
+	private T data;
 }
