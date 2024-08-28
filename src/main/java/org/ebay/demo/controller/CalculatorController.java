@@ -6,6 +6,8 @@ import org.ebay.demo.domain.Calculator;
 import org.ebay.demo.domain.ChainedCalculator;
 import org.ebay.demo.enums.Operation;
 import org.ebay.demo.model.OperationRequest;
+import org.ebay.demo.model.Response;
+import org.ebay.demo.service.CalculatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,41 +21,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/calculator")
 public class CalculatorController {
 
-	private final Calculator calculator;
-	private final ChainedCalculator chainedCalculator;
+	private final CalculatorService calculatorService;
 
 	@Autowired
-	public CalculatorController(Calculator calculator, ChainedCalculator chainedCalculator) {
-		this.calculator = calculator;
-		this.chainedCalculator = chainedCalculator;
+	public CalculatorController(CalculatorService calculatorService) {
+		this.calculatorService = calculatorService;
 	}
 
 	@GetMapping("/calculate")
-	public Number calculate(
+	public Response calculate(
 			@RequestParam Operation operation,
 			@RequestParam Number num1,
 			@RequestParam Number num2) {
 		log.info("CalculatorController: received calculate request: {}, num1: {}, num2: {}", operation, num1, num2);
-		return calculator.calculate(operation, num1, num2);
+		Number result = calculatorService.calculate(operation, num1, num2);
+		return Response.builder().code("200").message("Calculation successful").data(result).build();
 	}
 
 	@PostMapping("/chain")
-	public Number chainOperations(
+	public Response chainOperations(
 			@RequestParam(required = false) Number initialValue,
 			@RequestBody List<OperationRequest> operations) {
 
-		log.info("CalculatorController: received chain request: initialValue: {}, operations: {}", initialValue, operations);
+		log.info("CalculatorController: received chain request: initialValue: {}, operations: {}", initialValue,
+				operations);
 		if (initialValue == null) {
 			initialValue = 0;
 		}
 
 		log.info("CalculatorController: starting chained calculator with initial value: {}", initialValue);
-		chainedCalculator.start(initialValue);
-
-		for (OperationRequest operationRequest : operations) {
-			chainedCalculator.apply(operationRequest.getOp(), operationRequest.getNum());
-		}
-
-		return chainedCalculator.getResult();
+		Number result = calculatorService.calculateChain(initialValue, operations);
+		return Response.builder().code("200").message("Chained calculation successful").data(result).build();
 	}
 }

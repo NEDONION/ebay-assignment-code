@@ -15,6 +15,10 @@
     "$resolver": "message",
     "stringified": true
   },
+  "traceId": {
+    "$resolver": "mdc",
+    "field": "traceId"
+  },
   "thread": {
     "$resolver": "thread",
     "field": "name"
