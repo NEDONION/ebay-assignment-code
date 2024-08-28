@@ -33,17 +33,25 @@ public class CalculatorService {
 		validationService.validateCalculateRequest(calculateRequest);
 		Operation operation = validationService.validateAndParseOperation(calculateRequest.getOp());
 
+		Number result;
 		Number num1 = null;
 		Number num2 = null;
 		try {
 			num1 = calculateRequest.getNum1();
 			num2 = calculateRequest.getNum2();
-			return calculator.calculate(operation, num1, num2);
+			result = calculator.calculate(operation, num1, num2);
 		} catch (Exception e) {
 			log.error("CalculatorService： Error during calculate: Operation={}, num1={}, num2={}", operation, num1,
 					num2, e);
 			throw new CalculationException("Failed to execute calculation", e);
 		}
+
+		if (result == null) {
+			log.error("CalculatorService： Error during calculate: Operation={}, num1={}, num2={}", operation, num1,
+					num2);
+			throw new CalculationException("Failed to execute calculation");
+		}
+		return result;
 	}
 
 

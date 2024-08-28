@@ -8,16 +8,17 @@ public class DoubleAddOperation implements OperationStrategy {
 
 	@Override
 	public Number execute(Number num1, Number num2) {
-		if (num1 instanceof Double && num2 instanceof Double) {
-			double a = num1.doubleValue();
-			double b = num2.doubleValue();
-			double result = a + b;
-			if (Double.isInfinite(result)) {
-				log.error("DoubleAddOperation: Double overflow");
-				throw new ArithmeticException("Double overflow");
-			}
-			return result;
+		// Convert both numbers to double for the operation
+		double a = num1.doubleValue();
+		double b = num2.doubleValue();
+		double result = a + b;
+
+		// Check for overflow
+		if (Double.isInfinite(result) || Double.isNaN(result)) {
+			log.error("DoubleAddOperation: Double overflow or invalid result");
+			throw new ArithmeticException("Double overflow or invalid result");
 		}
-		return null; // Fallback or other cases
+
+		return result;
 	}
 }

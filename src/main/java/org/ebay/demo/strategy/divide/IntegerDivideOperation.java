@@ -17,6 +17,7 @@ public class IntegerDivideOperation implements OperationStrategy {
 			throw new ArithmeticException("Integer overflow in division");
 		}
 
-		return num1.intValue() / num2.intValue();
+		// Convert to double to maintain precision in division
+		return num1.doubleValue() / num2.doubleValue();
 	}
 }
