@@ -52,10 +52,10 @@ public class IntegerOperationStrategyTest {
 
 	@Test
 	public void testDivideOperation() {
-		assertEquals(2, divideOperation.execute(6, 3));
-		assertEquals(-1, divideOperation.execute(-2, 2));
-		assertEquals(1, divideOperation.execute(-3, -3));
+		assertEquals(2.0, divideOperation.execute(6, 3));
+		assertEquals(-1.0, divideOperation.execute(-2, 2));
+		assertEquals(1.0, divideOperation.execute(-3, -3));
 		assertThrows(ArithmeticException.class, () -> divideOperation.execute(1, 0));
-		assertEquals(Integer.MIN_VALUE, divideOperation.execute(Integer.MIN_VALUE, 1));
+		assertEquals((double) Integer.MIN_VALUE, divideOperation.execute(Integer.MIN_VALUE, 1));
 	}
 }
