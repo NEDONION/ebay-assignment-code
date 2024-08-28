@@ -7,10 +7,27 @@ import org.ebay.demo.strategy.OperationStrategy;
 public class IntegerSubtractOperation implements OperationStrategy {
 	@Override
 	public Number execute(Number num1, Number num2) {
-		if (num1.intValue() == Integer.MIN_VALUE && num2.intValue() < 0) {
-			log.error("Integer overflow");
+		int n1 = num1.intValue();
+		int n2 = num2.intValue();
+
+		// check for subtraction overflow
+		if (n1 == Integer.MIN_VALUE && n2 == 1) {
+			log.error("IntegerSubtractOperation: Integer overflow");
+			throw new ArithmeticException("Integer underflow");
+		}
+
+		// check for addition overflow
+		if (n1 < 0 && n2 > 0 && n1 - n2 > 0) {
+			log.error("IntegerSubtractOperation: Integer overflow");
 			throw new ArithmeticException("Integer overflow");
 		}
-		return num1.intValue() - num2.intValue();
+
+		// check for subtraction overflow
+		if (n1 > 0 && n2 < 0 && n1 - n2 < 0) {
+			log.error("IntegerSubtractOperation: Integer overflow");
+			throw new ArithmeticException("Integer overflow");
+		}
+
+		return n1 - n2;
 	}
 }

@@ -8,6 +8,8 @@ import org.ebay.demo.strategy.OperationStrategy;
 @Slf4j
 public class BigDecimalDivideOperation implements OperationStrategy {
 
+	// Precision and scale for division
+	public static final int SCALE = 15;
 	@Override
 	public Number execute(Number num1, Number num2) {
 		BigDecimal bd1 = toBigDecimal(num1);
@@ -16,7 +18,7 @@ public class BigDecimalDivideOperation implements OperationStrategy {
 			log.error("BigDecimalDivideOperation: Division by zero is not allowed");
 			throw new ArithmeticException("Division by zero is not allowed");
 		}
-		return bd1.divide(bd2, RoundingMode.HALF_UP);
+		return bd1.divide(bd2, SCALE, RoundingMode.HALF_UP);
 	}
 
 	private BigDecimal toBigDecimal(Number number) {
