@@ -17,13 +17,26 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(CalculationException.class)
 	public ResponseEntity<Response<String>> handleCalculationException(CalculationException ex) {
+
+		if (ex.getCause() instanceof ArithmeticException) {
+			return handleArithmeticException(ex.getCause());
+		}
+
 		Response<String> response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR.toString(), ex.getMessage(), null);
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<Response<String>> handleGeneralException(Exception ex) {
-		Response<String> response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "An unexpected error occurred", null);
+		String message = ex.getMessage() != null ? ex.getMessage() : "An error occurred";
+		Response<String> response = new Response<>(HttpStatus.INTERNAL_SERVER_ERROR.toString(), message, null);
 		return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(ArithmeticException.class)
+	public ResponseEntity<Response<String>> handleArithmeticException(Throwable throwable) {
+		String message = throwable.getMessage() != null ? throwable.getMessage() : "An arithmetic error occurred";
+		Response<String> response = new Response<>(HttpStatus.BAD_REQUEST.toString(), message, null);
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
 }
