@@ -5,6 +5,6 @@ import org.ebay.demo.enums.Operation;
 
 @Data
 public class OperationRequest {
-	private Operation op;
+	private String op;
 	private Number num;
 }

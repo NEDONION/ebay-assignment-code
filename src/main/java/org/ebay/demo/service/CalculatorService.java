@@ -7,6 +7,8 @@ import org.ebay.demo.domain.ChainedCalculator;
 import org.ebay.demo.enums.Operation;
 import org.ebay.demo.exceptions.BadParameterException;
 import org.ebay.demo.exceptions.CalculationException;
+import org.ebay.demo.model.CalculateRequest;
+import org.ebay.demo.model.ChainRequest;
 import org.ebay.demo.model.OperationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,33 +29,43 @@ public class CalculatorService {
 		this.validationService = validationService;
 	}
 
-	public Number calculate(Operation operation, Number num1, Number num2) {
-		validationService.validateOperation(operation);
-		validationService.validateInputs(num1, num2);
+	public Number calculate(CalculateRequest calculateRequest) {
+		validationService.validateCalculateRequest(calculateRequest);
+		Operation operation = validationService.validateAndParseOperation(calculateRequest.getOp());
+
+		Number num1 = null;
+		Number num2 = null;
 		try {
+			num1 = calculateRequest.getNum1();
+			num2 = calculateRequest.getNum2();
 			return calculator.calculate(operation, num1, num2);
 		} catch (Exception e) {
-			log.error("Error during single operation calculation: Operation={}, num1={}, num2={}", operation, num1,
+			log.error("CalculatorService： Error during calculate: Operation={}, num1={}, num2={}", operation, num1,
 					num2, e);
 			throw new CalculationException("Failed to execute calculation", e);
 		}
 	}
 
 
-	public Number calculateChain(Number initialValue, List<OperationRequest> operations) {
-		validationService.validateInputs(initialValue, operations);
+	public Number calculateChain(ChainRequest chainRequest) {
+		validationService.validateChainRequest(chainRequest);
+		Number initialValue = null;
+		List<OperationRequest> operations = null;
+
 		try {
+			initialValue = chainRequest.getInitialValue() != null ? chainRequest.getInitialValue() : 0;
+			operations = chainRequest.getOperations();
+
 			chainedCalculator.start(initialValue);
-
 			for (OperationRequest operationRequest : operations) {
-				chainedCalculator.apply(operationRequest.getOp(), operationRequest.getNum());
+				Operation operation = validationService.validateAndParseOperation(operationRequest.getOp());
+				chainedCalculator.apply(operation, operationRequest.getNum());
 			}
-
 			return chainedCalculator.getResult();
 		} catch (Exception e) {
-			log.error("Error during chained calculation: initialValue={}, operations={}", initialValue, operations, e);
+			log.error("CalculatorService： Error during calculateChain: initialValue={}, operations={}", initialValue,
+					operations, e);
 			throw new CalculationException("Failed to execute chained calculation", e);
 		}
 	}
-
 }
