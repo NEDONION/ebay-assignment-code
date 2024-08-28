@@ -20,6 +20,7 @@ public class ChainedCalculator {
 	}
 
 	public ChainedCalculator apply(Operation operation, Number operand) {
+		log.info("ChainedCalculator: applying operation: {}, operand: {}", operation, operand);
 		currentValue = calculator.calculate(operation, currentValue, operand);
 		return this;
 	}

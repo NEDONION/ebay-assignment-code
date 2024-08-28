@@ -6,8 +6,8 @@
       "timeZone": "UTC"
     }
   },
-  "ecs.version": "1.2.0",
-  "log.level": {
+  "ecsVersion": "1.2.0",
+  "level": {
     "$resolver": "level",
     "field": "name"
   },
@@ -15,11 +15,11 @@
     "$resolver": "message",
     "stringified": true
   },
-  "process.thread.name": {
+  "thread": {
     "$resolver": "thread",
     "field": "name"
   },
-  "log.logger": {
+  "logger": {
     "$resolver": "logger",
     "field": "name"
   },
