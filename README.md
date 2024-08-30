@@ -92,3 +92,11 @@ curl --location 'localhost:9090/v1/calculator/chain' \
   "data": 2.25
 }
 ```
+
+## Future Improvements
+- Support for more Operators and Numeric Types.
+        - Expand the calculator to handle more operations (like mod, square root) and support more numeric types (e.g., `Long`).
+- Add APM, Service Monitoring, and Tracing.
+- Edge case bug fixes
+- Resiliency (Rate Limiting, Retries, Multithreading)
+
