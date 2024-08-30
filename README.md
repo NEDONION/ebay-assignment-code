@@ -1,5 +1,8 @@
 # Pre-Interview Assignment: Implement a Flexible Calculator
 
+<img width="1000" alt="image" src="https://github.com/user-attachments/assets/64f2eb58-510b-42e2-a60b-35cd1d364266">
+
+
 ## Features
 - RESTful APIs CRUD
 - addition, subtraction, multiplication and division
